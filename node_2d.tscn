@@ -1,0 +1,46 @@
+[gd_scene load_steps=5 format=3 uid="uid://g5e2dik1roi8"]
+
+[ext_resource type="Script" path="res://addons/godot-motion-graphics/renderables/rectangle.gd" id="1_8auar"]
+[ext_resource type="Script" path="res://addons/godot-motion-graphics/animator/property_copy.gd" id="2_ln822"]
+[ext_resource type="Script" path="res://addons/godot-motion-graphics/renderables/grid2d.gd" id="2_xcxab"]
+[ext_resource type="Script" path="res://addons/godot-motion-graphics/animator/range_animator.gd" id="3_4vt11"]
+
+[node name="Node2D" type="Node2D"]
+
+[node name="GmgRectangle" type="Node2D" parent="."]
+visible = false
+position = Vector2(215, 66)
+script = ExtResource("1_8auar")
+width = 50.0
+height = 100.0
+
+[node name="GmgPropertyCopy" type="Node" parent="GmgRectangle"]
+script = ExtResource("2_ln822")
+source = NodePath("../../HSlider")
+source_property = &"value"
+target_property = &"width"
+pause_in_editor = null
+
+[node name="GmgGrid2D" type="Node2D" parent="."]
+position = Vector2(514, 305)
+script = ExtResource("2_xcxab")
+source = NodePath("../GmgRectangle")
+grid_size = Vector2i(8, 4)
+grid_spacing = Vector2(100, 150)
+item_rotation = 145.759
+item_scale = Vector2(1, 1)
+
+[node name="GmgRangeAnimator" type="Node" parent="GmgGrid2D"]
+script = ExtResource("3_4vt11")
+max = 360.0
+time_scale = 4.0
+property = &"item_rotation"
+pause_in_editor = true
+
+[node name="HSlider" type="HSlider" parent="."]
+offset_left = 17.0
+offset_top = 583.0
+offset_right = 432.0
+offset_bottom = 639.0
+
+[connection signal="value_changed" from="HSlider" to="GmgRectangle/GmgPropertyCopy" method="copy" unbinds=1]
